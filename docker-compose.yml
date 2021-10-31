@@ -112,13 +112,19 @@ services:
       - base-bionic
     scale: 0
 
-  stub:
+  build-stub:
     <<: *build-common-definitions
     build:
       context: ./docker/linux
       dockerfile: stub/Dockerfile
     image: cobalt-build-linux-stub
     depends_on: [ build-base ]
+    scale: 0
+
+  stub:
+    <<: *build-common-definitions
+    image: cobalt-build-linux-stub
+    depends_on: [ build-stub ]
     environment:
       <<: *shared-build-env
       PLATFORM: stub
@@ -279,12 +285,19 @@ services:
       CONFIG: ${CONFIG:-debug}
       TARGET_CPU: ${TARGET_CPU:-arm64}
 
-  raspi:
+  build-raspi:
     <<: *build-common-definitions
     build:
       context: ./docker/linux/raspi
       dockerfile: ./Dockerfile
     image: cobalt-build-raspi
+    depends_on: [ build-base ]
+    scale: 0
+
+  raspi:
+    <<: *build-common-definitions
+    image: cobalt-build-raspi
+    depends_on: [ build-raspi ]
     environment:
       <<: *shared-build-env
       PLATFORM: ${PLATFORM:-raspi-2}
@@ -310,6 +323,7 @@ services:
     image: cobalt-build-evergreen
     environment:
       <<: *shared-build-env
+    scale: 0
 
   evergreen-x64:
     <<: *build-common-definitions
