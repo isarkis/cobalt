@@ -1,0 +1,25 @@
+name: Docker-compose
+
+on: [push]
+
+jobs:
+  container-build:
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - build-android
+          - build-evergreen
+          - build-base
+          - build-raspi
+          - build-stub
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build containers with docker-compose
+        uses: smartlyio/docker-compose-action@v1
+        with:
+          serviceName: ${{ matrix.service }}
+          build: false
+          push: "on:push"
