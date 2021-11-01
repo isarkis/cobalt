@@ -4,13 +4,12 @@ options:
 steps:
 - name: 'gcr.io/cobalt-demo-330821/docker-compose'
   args: ['build',
+         'base',
          'build-base',
          'build-android',
          'build-evergreen',
          'build-linux-stub',
          'build-raspi']
-  env:
-    - 'NINJA_STATUS="[%f/%t %c/sec] "'
 - name: 'gcr.io/cloud-builders/docker'
   args: ['tag', 'workspace_app:latest', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
 images: ['gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
