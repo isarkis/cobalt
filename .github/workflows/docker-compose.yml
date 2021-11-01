@@ -2,6 +2,9 @@ name: Docker-compose
 
 on: [push]
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   container-build:
     strategy:
@@ -9,17 +12,40 @@ jobs:
       matrix:
         service:
           - build-android
-          - build-evergreen
           - build-base
-          - build-raspi
+          - build-evergreen
           - build-linux-stub
+          - build-raspi
 
     runs-on: ubuntu-latest
     steps:
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
       - uses: actions/checkout@v2
+
+      - name: Retrieve Docker metadata
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/cobalt-${{ matrix.service }} 
+
       - name: Build containers with docker-compose
         uses: smartlyio/docker-compose-action@v1
         with:
           serviceName: ${{ matrix.service }}
           build: false
           push: "on:push"
+
+      - name: Tag images
+        run: docker tag cobalt-${{ matrix.service }} ${{ steps.meta.outputs.tags }}
+
+      - name: Push images
+        if: github.event_name != 'pull_request'
+        run: docker push ${{ steps.meta.outputs.tags }}
+
