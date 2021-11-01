@@ -12,7 +12,7 @@ jobs:
           - build-evergreen
           - build-base
           - build-raspi
-          - build-stub
+          - build-linux-stub
 
     runs-on: ubuntu-latest
     steps:

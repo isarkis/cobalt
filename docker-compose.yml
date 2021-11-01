@@ -112,7 +112,7 @@ services:
       - base-bionic
     scale: 0
 
-  build-stub:
+  build-linux-stub:
     <<: *build-common-definitions
     build:
       context: ./docker/linux
@@ -124,7 +124,7 @@ services:
   stub:
     <<: *build-common-definitions
     image: cobalt-build-linux-stub
-    depends_on: [ build-stub ]
+    depends_on: [ build-linux-stub ]
     environment:
       <<: *shared-build-env
       PLATFORM: stub
