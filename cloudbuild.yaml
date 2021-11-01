@@ -11,5 +11,17 @@ steps:
          'build-linux-stub',
          'build-raspi']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['tag', 'workspace_app:latest', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
-images: ['gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
+  args: ['tag', 'build-base:latest', 'gcr.io/$PROJECT_ID/cobalt-build-base:dev']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['tag', 'build-android:latest', 'gcr.io/$PROJECT_ID/cobalt-build-android:dev']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['tag', 'build-evergreen:latest', 'gcr.io/$PROJECT_ID/cobalt-build-evergreen:dev']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['tag', 'build-linux-stub:latest', 'gcr.io/$PROJECT_ID/cobalt-build-linux-stub:dev']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['tag', 'build-raspi:latest', 'gcr.io/$PROJECT_ID/cobalt-build-raspi:dev']
+images: ['gcr.io/$PROJECT_ID/cobalt-build-base:dev',
+         'gcr.io/$PROJECT_ID/cobalt-build-android:dev',
+         'gcr.io/$PROJECT_ID/cobalt-build-evergreen:dev',
+         'gcr.io/$PROJECT_ID/cobalt-build-linux-stub:dev',
+         'gcr.io/$PROJECT_ID/cobalt-build-raspi:dev']
