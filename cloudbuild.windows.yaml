@@ -1,0 +1,7 @@
+timeout: 7200s
+options:
+  machineType: N1_HIGHCPU_8
+steps:
+- name: 'gcr.io/cobalt-demo-330821/windows-builder'
+  args: ['--command', 'echo hello world',
+         '--image', 'projects/windows-cloud/global/images/windows-server-2019-dc-core-for-containers-v20211012']
