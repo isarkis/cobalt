@@ -5,5 +5,4 @@ steps:
 - name: 'gcr.io/cobalt-demo-330821/windows-builder'
   args: ['--command', 'gsutil --help',
          '--tags', 'cobalt-windows',
-         '--not-copy-workspace',
          '--image', 'projects/windows-cloud/global/images/windows-server-2019-dc-core-for-containers-v20211012']
