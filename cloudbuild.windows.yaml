@@ -1,7 +1,7 @@
 timeout: 7200s
 steps:
 - name: 'gcr.io/cobalt-tools/windows-builder'
-  args: ['--command', 'docker --version',
+  args: ['--command', 'docker run hello-world',
          '--tags', 'cobalt-windows',
          '--machineType', 'e2-highcpu-32',
          '--copyTimeout', '60',
