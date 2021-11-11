@@ -1,7 +1,7 @@
 timeout: 7200s
 steps:
-- name: 'gcr.io/cobalt-demo-330821/windows-builder'
-  args: ['--command', 'gsutil --help',
+- name: 'gcr.io/cobalt-tools/windows-builder'
+  args: ['--command', 'docker --version',
          '--tags', 'cobalt-windows',
          '--machineType', 'n1-highcpu-8',
          '--copyTimeout', '60',
