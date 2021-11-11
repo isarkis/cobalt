@@ -6,3 +6,6 @@ steps:
          '--machineType', 'e2-highcpu-32',
          '--copyTimeout', '60',
          '--image', 'projects/windows-cloud/global/images/windows-server-2019-dc-core-for-containers-v20211012']
+options:
+  pool:
+    name: 'projects/cobalt-tools/locations/us-central1/workerPools/cobalt-windows-builder'
