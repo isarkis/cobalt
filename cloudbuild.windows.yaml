@@ -1,8 +1,9 @@
 timeout: 7200s
 steps:
 - name: 'gcr.io/cobalt-demo-330821/windows-builder'
-  args: ['--command', 'docker run hello-world',
+  args: ['--command', 'ls -ltaR',
          '--machineType', 'e2-highcpu-8',
          '--copyTimeout', '60',
          '--workspace-path', '/workspace/docker',
+         '--tags', 'cobalt-windows',
          '--image', 'projects/windows-cloud/global/images/windows-server-2019-dc-core-for-containers-v20211012']
