@@ -1,7 +1,7 @@
 timeout: 7200s
 steps:
 - name: 'gcr.io/cobalt-demo-330821/windows-builder'
-  args: ['--command', 'ls -ltaR',
+  args: ['--command', 'dir',
          '--machineType', 'e2-highcpu-8',
          '--copyTimeout', '60',
          '--workspace-path', '/workspace/docker',
