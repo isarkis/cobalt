@@ -1,4 +1,7 @@
 timeout: 7200s
+options:
+  pool:
+    name: 'projects/cobalt-tools/locations/us-central1/workerPools/cobalt-windows-builder'
 steps:
         - name: gcr.io/cloud-builders/gcloud
           entrypoint: "bash"
