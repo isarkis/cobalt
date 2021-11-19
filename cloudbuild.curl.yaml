@@ -1,0 +1,8 @@
+timeout: 7200s
+steps:
+        - name: gcr.io/cloud-builders/gcloud
+          entrypoint: "bash"
+          args:
+                  - "-c"
+                  - |
+                      curl "http://metadata.google.internal/computeMetadata/v1/project/numeric-project-id" -H "Metadata-Flavor: Google"
