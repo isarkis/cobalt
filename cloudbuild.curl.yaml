@@ -8,7 +8,10 @@ steps:
           args:
                   - "-c"
                   - |
+                      echo 'zone:'
                       curl "http://metadata.google.internal/computeMetadata/v1/instance/zone" -H "Metadata-Flavor: Google"
+                      echo 'project:'
                       curl "http://metadata.google.internal/computeMetadata/v1/project/numeric-project-id" -H "Metadata-Flavor: Google"
+                      echo 'hostname:'
                       echo `hostname`
                       gcloud compute instances describe `hostname` --zone=us-central1-a | grep email:
