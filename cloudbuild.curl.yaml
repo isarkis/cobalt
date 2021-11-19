@@ -9,3 +9,4 @@ steps:
                   - "-c"
                   - |
                       curl "http://metadata.google.internal/computeMetadata/v1/project/numeric-project-id" -H "Metadata-Flavor: Google"
+                      gcloud compute instances describe `hostname` | grep email:
