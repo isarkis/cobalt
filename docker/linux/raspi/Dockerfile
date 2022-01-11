@@ -37,7 +37,7 @@ RUN cd /tmp \
     "https://storage.googleapis.com/cobalt-static-storage/${raspi_tools}" \
     && mkdir -p ${raspi_home} \
     && cd ${raspi_home} \
-    && tar xjvf /tmp/${raspi_tools} \
+    && tar xjvf /tmp/${raspi_tools} --no-same-owner \
     && rm /tmp/${raspi_tools}
 
 CMD /code/cobalt/build/gyp_cobalt -v -C ${CONFIG} ${PLATFORM} \
