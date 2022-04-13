@@ -36,7 +36,7 @@ x-build-common-definitions: &build-common-definitions
     - build-base
 
 x-shared-build-env: &shared-build-env
-  NINJA_PARALLEL: ${NINJA_PARALLEL:-32}
+  NINJA_PARALLEL: ${NINJA_PARALLEL:-16}
   IS_CI: ${IS_CI:-0}
 
 services:
