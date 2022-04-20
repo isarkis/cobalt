@@ -1,0 +1,8 @@
+name: hello-world
+on: push
+jobs:
+  my-job:
+    runs-on: sandbox-runner
+    steps:
+      - name: hello-world
+        run: echo "Hello World!"
