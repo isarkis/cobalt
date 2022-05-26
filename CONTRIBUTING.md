@@ -7,6 +7,7 @@ make sure you know what to expect.
 
 ## Before You Contribute
 #
+#
 
 ### As an Individual
 
