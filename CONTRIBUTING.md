@@ -8,6 +8,7 @@ make sure you know what to expect.
 
 ### As an Individual
 
+
 Before Cobalt can use your code, as an unaffiliated individual, you must sign
 the [Google Individual Contributor License Agreement](https://cla.developers.google.com/about/google-individual) (CLA), which you can do online.
 
