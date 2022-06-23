@@ -4,10 +4,10 @@ We'd love to hear about how you would like to contribute to Cobalt! It's worth
 reading through this modest document first, to understand the process and to
 make sure you know what to expect.
 
-
 ## Before You Contribute
 
 ### As an Individual
+
 
 Before Cobalt can use your code, as an unaffiliated individual, you must sign
 the [Google Individual Contributor License Agreement](https://cla.developers.google.com/about/google-individual) (CLA), which you can do online.
