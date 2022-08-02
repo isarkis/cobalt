@@ -1,5 +1,5 @@
 name: On-device Test
-description: Uploads test archives to GCS and runs on-device tests.
+description: Uploads test archives to GCS bucket and runs on-device tests.
 runs:
   using: "composite"
   steps:
