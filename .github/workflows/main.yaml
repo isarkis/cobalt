@@ -119,7 +119,7 @@ jobs:
   # Runs on-device tests.
   on-device-test:
     needs: [docker-image, build-matrix, build]
-    if: needs.build-matrix.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push') 
+    if: needs.build-matrix.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push')
     runs-on: [self-hosted, linux, X64]
     name: ${{matrix.platform}}_${{matrix.type}}
     strategy:
@@ -134,6 +134,32 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 1
+      - name: Debug python version
+        run: |
+          echo "$(python --version)"
+        shell: bash
+      - name: Install requirements
+        run: |
+          pip install grpcio grpcio-tools
+        shell: bash
+      - name: run dummy test
+        run: |
+          python2 test_labs_gateway.py \
+            --test_type unit_test \
+            --platform android-arm64 \
+            --gateway_exit_status NEW \
+            --run_as youtube-cobalt-mh-owner \
+            --remote_archive_path gs://mh_testing_tmp/manual_testing/android-arm64_tests/2939/android-arm64_devel_unit_tests/artifacts.tar \
+            --branch COBALT \
+            --config devel \
+            --tag cobalt_postsubmit \
+            --sponge_label cobalt_postsubmit \
+            --change_id "" \
+            --builder_name android-arm64_tests \
+            --build_number 2939 \
+            --start_timeout 10h \
+            --docker
+        shell: bash
 
   # Runs on-host integration and unit tests.
   on-host-test:
