@@ -41,6 +41,7 @@ std::deque<std::string> GetDirectoryEntries(HANDLE directory_handle) {
       static_cast<int>(directory_info_buffer.size()));
 
   if (!directory_info_success) {
+    SB_LOG(INFO) << "Failed GetFileInformationByHandleEx";
     return entries;
   }
 
