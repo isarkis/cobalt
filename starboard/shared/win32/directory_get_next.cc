@@ -75,6 +75,7 @@ bool SbDirectoryGetNext(SbDirectory directory,
                         size_t out_entry_size) {
   if (!SbDirectoryIsValid(directory) || out_entry == nullptr ||
       out_entry_size < kSbFileMaxName) {
+    SB_LOG(INFO) << "11111";
     return false;
   }
 
@@ -84,12 +85,14 @@ bool SbDirectoryGetNext(SbDirectory directory,
   }
 
   if (next_directory_entries.empty()) {
+    SB_LOG(INFO) << "2222";
     return false;
   }
 
   bool success = true;
   if (starboard::strlcpy(out_entry, next_directory_entries.rbegin()->c_str(),
                          static_cast<int>(out_entry_size)) >= out_entry_size) {
+    SB_LOG(INFO) << "3333";
     success = false;
   }
   directory->next_directory_entries.pop_back();
