@@ -23,6 +23,7 @@
 #include "starboard/directory.h"
 #include "starboard/loader_app/drain_file_helper.h"
 #include "starboard/system.h"
+#include "starboard/thread.h"
 #include "starboard/types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -207,6 +208,7 @@ TEST_F(DrainFileTest, SunnyDayPrepareDirectory) {
 // file should fail.
 TEST_F(DrainFileTest, RainyDayDrainFileAlreadyExists) {
   EXPECT_TRUE(DrainFileTryDrain(GetTempDir(), kAppKeyOne));
+  SbThreadSleep(kSbTimeSecond * 60 * 2);
   EXPECT_FALSE(DrainFileTryDrain(GetTempDir(), kAppKeyTwo));
 }
 
