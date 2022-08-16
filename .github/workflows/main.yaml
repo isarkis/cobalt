@@ -119,7 +119,7 @@ jobs:
   # Runs on-device tests.
   on-device-test:
     needs: [docker-image, build-matrix, build]
-    if: needs.build-matrix.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push')
+    # TODO: revert back if: needs.build-matrix.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push')
     runs-on: [self-hosted, linux, X64]
     name: ${{matrix.platform}}_${{matrix.type}}
     strategy:
@@ -136,7 +136,7 @@ jobs:
           fetch-depth: 1
       - name: Debug python version
         run: |
-          echo "$(python --version)"
+          python --version
         shell: bash
       - name: Install requirements
         run: |
@@ -144,7 +144,7 @@ jobs:
         shell: bash
       - name: run dummy test
         run: |
-          python2 test_labs_gateway.py \
+          python test_labs_gateway.py \
             --test_type unit_test \
             --platform android-arm64 \
             --gateway_exit_status NEW \
