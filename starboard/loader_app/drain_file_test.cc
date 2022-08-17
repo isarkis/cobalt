@@ -208,7 +208,7 @@ TEST_F(DrainFileTest, SunnyDayPrepareDirectory) {
 // file should fail.
 TEST_F(DrainFileTest, RainyDayDrainFileAlreadyExists) {
   EXPECT_TRUE(DrainFileTryDrain(GetTempDir(), kAppKeyOne));
-  SbThreadSleep(kSbTimeSecond * 60 * 2);
+  // SbThreadSleep(kSbTimeSecond * 60 * 2);
   EXPECT_FALSE(DrainFileTryDrain(GetTempDir(), kAppKeyTwo));
 }
 

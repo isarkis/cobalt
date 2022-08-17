@@ -72,7 +72,6 @@ bool IsExpired(const std::string& filename) {
 std::vector<std::string> FindAllWithPrefix(const std::string& dir,
                                            const std::string& prefix) {
   SbDirectory slot = SbDirectoryOpen(dir.c_str(), NULL);
-  SB_LOG(INFO) << "Opening directory: " << dir;
 
   if (!SbDirectoryIsValid(slot)) {
     SB_LOG(ERROR) << "Failed to open provided directory '" << dir << "'";
@@ -84,7 +83,6 @@ std::vector<std::string> FindAllWithPrefix(const std::string& dir,
   std::vector<char> filename(kSbFileMaxName);
 
   while (SbDirectoryGetNext(slot, filename.data(), filename.size())) {
-    SB_LOG(INFO) << "Filename is: " << filename.data();
     if (!strcmp(filename.data(), ".") || !strcmp(filename.data(), ".."))
       continue;
     if (!strncmp(prefix.data(), filename.data(), prefix.size()))
