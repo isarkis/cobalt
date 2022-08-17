@@ -131,13 +131,19 @@ jobs:
     container: ${{ needs.docker-image.outputs.docker_tag }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 1
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+        env:
+            AGENT_TOOLSDIRECTORY: /opt/hostedtoolcache
+
       - name: Debug python version
         run: |
-          python --version
-        shell: bash
+          echo "$(which pip)"
+          echo "$(python --version)"
       - name: Install requirements
         run: |
           pip install grpcio grpcio-tools
