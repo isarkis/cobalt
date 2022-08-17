@@ -134,28 +134,26 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.x"
-        env:
-            AGENT_TOOLSDIRECTORY: /opt/hostedtoolcache
-
       - name: Debug python version
         run: |
-          echo "$(which pip)"
-          echo "$(python --version)"
+          echo "$(pip3 --version)"
+          echo "$(python3 --version)"
       - name: Install requirements
         run: |
-          pip install grpcio grpcio-tools
+          pip3 install grpcio grpcio-tools
+        shell: bash
+      - name: Debug hostname
+        run: |
+          hostname
         shell: bash
       - name: run dummy test
         run: |
-          python test_labs_gateway.py \
+          python3 tools/mobile_harness_gateway.py \
             --test_type unit_test \
             --platform android-arm64 \
-            --gateway_exit_status NEW \
+            --gateway_exit_status DONE \
             --run_as youtube-cobalt-mh-owner \
-            --remote_archive_path gs://mh_testing_tmp/manual_testing/android-arm64_tests/2939/android-arm64_devel_unit_tests/artifacts.tar \
+            --remote_archive_path gs://cobalt-actions-devel-test-artifacts/android-arm64/104/artifacts.tar \
             --branch COBALT \
             --config devel \
             --tag cobalt_postsubmit \

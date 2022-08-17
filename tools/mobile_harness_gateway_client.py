@@ -1,23 +1,23 @@
-"""gRPC Test Labs Gateway server."""
+"""gRPC Mobile Harness Gateway server."""
 from __future__ import print_function
 import grpc
-import test_labs_gateway_pb2
-import test_labs_gateway_pb2_grpc
+import mobile_harness_gateway_pb2
+import mobile_harness_gateway_pb2_grpc
 import sys
 
-_WORK_DIR = '/test_labs_gateway'
-_TEST_LABS_GATEWAY_SERVICE_HOST = 'test-labs-gateway-service'
-_TEST_LABS_GATEWAY_SERVICE_PORT = '50051'
+_WORK_DIR = '/mobile_harness_gateway'
+_MOBILE_HARNESS_GATEWAY_SERVICE_HOST = 'mobile-harness-gateway-service'
+_MOBILE_HARNESS_GATEWAY_SERVICE_PORT = '50051'
 
 
-class TestLabsGatewayClient():
-  """Test Labs Gateway Client class."""
+class MobileHarnessGatewayClient():
+  """Mobile Harness Gateway Client class."""
 
   def __init__(self):
     self.channel = grpc.insecure_channel(
       target='%s:%s' %
-        (_test_labs_GATEWAY_SERVICE_HOST,
-         _test_labs_GATEWAY_SERVICE_PORT),
+        (_MOBILE_HARNESS_GATEWAY_SERVICE_HOST,
+         _MOBILE_HARNESS_GATEWAY_SERVICE_PORT),
       # These options need to match server settings.
       options=[
         ('grpc.keepalive_time_ms', 10000),
@@ -28,19 +28,19 @@ class TestLabsGatewayClient():
         ('grpc.http2.min_ping_interval_without_data_ms', 5000)
       ]
     )
-    self.stub = test_labs_gateway_pb2_grpc.test_labs_gatewayStub(
+    self.stub = mobile_harness_gateway_pb2_grpc.mobile_harness_gatewayStub(
         self.channel)
 
   def run_command(self, workdir, args):
     for response_line in self.stub.exec_command(
-        test_labs_gateway_pb2.TestLabsCommand(
+        mobile_harness_gateway_pb2.MobileHarnessCommand(
             workdir=workdir, args=args)):
       print(response_line.response, end='')
 
 
 def main():
   """Main routine."""
-  client = TestLabsGatewayClient()
+  client = MobileHarnessGatewayClient()
   try:
     cmd = ' '.join(sys.argv[1:])
     client.run_command(workdir=_WORK_DIR, args=cmd)

@@ -13,20 +13,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Runs a test in the test labs, or watch an already running test.
+"""Runs a test in the mobile harness, or watch an already running test.
 
-This wrapper will trigger a test labs build either via blaze or the cobalt
-test labs gateway jar.
+This wrapper will trigger a mobile harness build either via blaze or the cobalt
+mobile harness gateway jar.
 
 Sample Gateway Call from Buildbot:
-./test_labs_gateway.py --test_type unit_test --platform raspi-2 --gateway_exit_status DONE --remote_archive_path gs://mh_testing_tmp/_test_try_raspi-2_devel_tests/2019-11-05/16/unit/raspi-2_devel/cobalt_archive.tar --branch COBALT --config devel --tag cobalt_postsubmit --sponge_label cobalt_postsubmit --change_id "" --builder_name raspi-2_tests --build_number 87  # pylint:disable=line-too-long
+./mobile_harness_gateway.py --test_type unit_test --platform raspi-2 --gateway_exit_status DONE --remote_archive_path gs://mh_testing_tmp/_test_try_raspi-2_devel_tests/2019-11-05/16/unit/raspi-2_devel/cobalt_archive.tar --branch COBALT --config devel --tag cobalt_postsubmit --sponge_label cobalt_postsubmit --change_id "" --builder_name raspi-2_tests --build_number 87  # pylint:disable=line-too-long
 
 To call with blaze test instead, simply add --use_blaze.
 Optionally, add --workspace_name to have it run the blaze test from a particular workspace.
-E.G. ./test_labs_gateway.py --use_blaze --workspace_name <existing_workspace> ...
+E.G. ./mobile_harness_gateway.py --use_blaze --workspace_name <existing_workspace> ...
 
-Many parameters are only necessary for buildbot. The simplest local call to test labs would be:
-./test_labs_gateway.py --test_type unit_test --platform raspi-2 --config devel --remote_archive_path gs://mh_testing_tmp/_test_try_raspi-2_devel_tests/2019-11-05/16/unit/raspi-2_devel/cobalt_archive.tar  # pylint:disable=line-too-long
+Many parameters are only necessary for buildbot. The simplest local call to mobile harness would be:
+./mobile_harness_gateway.py --test_type unit_test --platform raspi-2 --config devel --remote_archive_path gs://mh_testing_tmp/_test_try_raspi-2_devel_tests/2019-11-05/16/unit/raspi-2_devel/cobalt_archive.tar  # pylint:disable=line-too-long
 This assumes that you've uploaded files to gcs first.
 """
 
@@ -83,10 +83,10 @@ _ALPN_JAR_NAME = 'alpn.jar'
 _GCS_GATEWAY_DIR = 'gs://cobalt_tools/mh_gateway'
 
 # Gateway service vars.
-_GATEWAY_SERVICE_PROTO = 'test_labs_gateway.proto'
-_GATEWAY_SERVICE_PROTO_CODE = 'test_labs_gateway_pb2.py'
-_GATEWAY_SERVICE_GRPC_CODE = 'test_labs_gateway_pb2_grpc.py'
-_GATEWAY_SERVICE_CLIENT = 'test_labs_gateway_client.py'
+_GATEWAY_SERVICE_PROTO = 'tools/mobile_harness_gateway.proto'
+_GATEWAY_SERVICE_PROTO_CODE = 'tools/mobile_harness_gateway_pb2.py'
+_GATEWAY_SERVICE_GRPC_CODE = 'tools/mobile_harness_gateway_pb2_grpc.py'
+_GATEWAY_SERVICE_CLIENT = 'tools/mobile_harness_gateway_client.py'
 
 
 def _TokenizeCmd(cmd):
@@ -269,7 +269,7 @@ def _GetBlazeTarget(test_type, platform):
 
 
 def _CreateDimensionFlags(dimensions):
-  """Create the dimension flags used by test labs to select a device.
+  """Create the dimension flags used by mobile harness to select a device.
 
   Args:
     dimensions: Array of dimensions. Must follow the form "<dim>=<value>".
@@ -324,7 +324,7 @@ def _CreateCobaltFlags(test_type,
         triggered.
 
   Returns:
-    String of arguments passed through test labs to Cobalt test code
+    String of arguments passed through mobile harness to Cobalt test code
   """
   flag_arr = []
 
@@ -477,9 +477,9 @@ def _BuildWatchGatewayCommand(cmd, gateway_exit_status, session_id):
   Create the command that will be watch gateway test
 
   Args:
-    cmd: Command to trigger test labs gateway (no arguments)
+    cmd: Command to trigger mobile harness gateway (no arguments)
     gateway_exit_status: Exit status on which to stop watching.
-    session_id: ID of the test running on test labs.
+    session_id: ID of the test running on mobile harness.
 
   Returns:
     cmd: Command array to start watching test session.
@@ -498,11 +498,11 @@ def _BuildTriggerGatewayCommand(cmd, gateway_exit_status, blaze_target, run_as,
   Create the command that will be executed to start a gateway test.
 
   Args:
-    cmd: Command to trigger test labs gateway (no arguments)
+    cmd: Command to trigger mobile harness gateway (no arguments)
     gateway_exit_status: When this session status is reached,
                          end process (but not the test)
     blaze_target: Test target on g3 to run
-    run_as: test labs user that determines device access
+    run_as: mobile harness user that determines device access
     dimension_flags: Result of _CreateDimensionFlags
     cobalt_flags: Result of _CreateCobaltFlags
     sponge_labels: Result of _CreateSpongeLabels
@@ -636,7 +636,7 @@ def _FindGatewayFiles(gateway_dir, resync_gateway, dry_run):
     dry_run: If True, do not download files, even if missing
 
   Returns:
-    cmd: Command to trigger test labs gateway (no arguments).
+    cmd: Command to trigger mobile harness gateway (no arguments).
   """
 
   if gateway_dir is None:
@@ -693,13 +693,13 @@ def _EnforceMinimumJobTimeout(start_timeout, test_timeout, job_timeout):
 
 def _FindGatewayServiceFiles():
   """
-  Generate gRPC code for test labs Gateway service if
+  Generate gRPC code for mobile harness Gateway service if
   necessary, and return command to trigger service clienti (without
   arguments).
   """
   if (not os.path.isfile(_GATEWAY_SERVICE_PROTO_CODE) or
       not os.path.isfile(_GATEWAY_SERVICE_GRPC_CODE)):
-    logging.info('Generating test labs Gateway service gRPC code...')
+    logging.info('Generating mobile harness Gateway service gRPC code...')
     from grpc.tools import protoc  # pylint: disable=import-outside-toplevel
     protoc.main([
         'grpc_tools.protoc', '-I.', '--python_out=.', '--grpc_python_out=.',
@@ -722,7 +722,7 @@ def main():
   _SetLoggingConfig(brief=False)
 
   parser = HelpfulParser(
-      epilog=(r'Example: ./test_labs_gateway.py --test_type=unit_test '
+      epilog=(r'Example: ./mobile_harness_gateway.py --test_type=unit_test '
               r'--remote_archive_path=gs://mh_testing_tmp/'
               r'_test_try_raspi-2_devel_tests/2019-11-05/16/unit/raspi-2_devel/'
               r'cobalt_archive.tar '
@@ -740,7 +740,7 @@ def main():
       '--use_blaze',
       action='store_true',
       help='Trigger the test with blaze instead of '
-      'the test labs gateway.')
+      'the mobile harness gateway.')
   parser.add_argument(
       '--workspace_name',
       type=str,
@@ -755,7 +755,7 @@ def main():
       type=str,
       default=None,
       help='Path to gateway files used to interact '
-      'with test labs.')
+      'with mobile harness.')
   parser.add_argument(
       '--gateway_exit_status',
       type=str,
@@ -774,8 +774,8 @@ def main():
       '--session_id',
       type=str,
       default=None,
-      help='Session id of a previously triggered test '
-      'labs test. If passed, the test will not be '
+      help='Session id of a previously triggered mobile '
+      'harness test. If passed, the test will not be '
       'triggered, but will be watched until the exit '
       'status is reached.')
   parser.add_argument(
@@ -818,13 +818,13 @@ def main():
       type=str,
       default='youtube-cobalt-mh-owner',
       help='User credentials to use to access '
-      'test labs devices.')
+      'mobile harness devices.')
   parser.add_argument(
       '--accounting_group',
       type=str,
       default='youtube-cobalt',
       help='Accounting group that will pay for '
-      'test labs usage.')
+      'mobile harness usage.')
   parser.add_argument(
       '--sponge_label',
       type=str,
@@ -854,7 +854,7 @@ def main():
       '--dimension',
       type=str,
       action='append',
-      help='test labs dimension used to select a device. '
+      help='mobile harness dimension used to select a device. '
       'Must have the following form: <dimension>=<value>.'
       ' E.G. "id=Maneki_Microsoft_XBoxOneS_1".')
 
