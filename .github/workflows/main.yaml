@@ -121,13 +121,13 @@ jobs:
     needs: [docker-image, build-matrix, build]
     # TODO: revert back if: needs.build-matrix.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push')
     runs-on: [self-hosted, linux, X64]
-    name: On Device Test (${{matrix.platform}}_${{matrix.type}})
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: ${{ fromJson(needs.build-matrix.outputs.platforms) }}
-        type: [unit_test, integration_test]
-        include: ${{ fromJson(needs.build-matrix.outputs.includes) }}
+    name: On Device Test (dummy)
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     platform: ${{ fromJson(needs.build-matrix.outputs.platforms) }}
+    #     type: [unit_test, integration_test]
+    #     include: ${{ fromJson(needs.build-matrix.outputs.includes) }}
     container: ${{ needs.docker-image.outputs.docker_tag }}
     steps:
       - name: Checkout
