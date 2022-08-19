@@ -53,9 +53,21 @@ std::deque<std::string> GetDirectoryEntries(HANDLE directory_handle) {
   const char* directory_info_pointer = directory_info_buffer.data();
   DWORD next_entry_offset = 0;
 
+  if (!directory_info_buffer) {
+    SB_LOG(INFO) << "dir info buffer is null";
+  }
+
+  if (!directory_info_pointer) {
+    SB_LOG(INFO) << "dir info pointer is null";
+  }
+
   do {
+    SB_LOG(INFO) << "Starting loop with next_entry_offset: " << next_entry_offset;
     auto directory_info =
         reinterpret_cast<const FILE_ID_BOTH_DIR_INFO*>(directory_info_pointer);
+    if (!directory_info) {
+      SB_LOG(INFO) << "dir info is null";
+    }
 
     // FileName is in Unicode, so divide by 2 to get the real length.
     DWORD number_characters_in_filename = directory_info->FileNameLength / 2;
