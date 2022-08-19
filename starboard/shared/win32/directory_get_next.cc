@@ -40,16 +40,12 @@ std::deque<std::string> GetDirectoryEntries(HANDLE directory_handle) {
       directory_handle, FileIdBothDirectoryInfo, directory_info_buffer.data(),
       static_cast<int>(directory_info_buffer.size()));
 
-  if (directory_info_success) {
-    SB_LOG(INFO) << "Successfully got directories";
-  } else {
-    SB_LOG(INFO) << "Failed to get directories";
-  }
+  SB_LOG(INFO) << "Result was: " << directory_info_success ? "success" : "failure";
   for (int i = 0; i < entries.size(); i++) {
     SB_LOG(INFO) << "Entry " << i << " is " << entries[i];
   }
 
-  if (!directory_info_success) 
+  if (!directory_info_success) {
     return entries;
   }
 
