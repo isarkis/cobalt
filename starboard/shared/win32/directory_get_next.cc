@@ -53,8 +53,8 @@ std::deque<std::string> GetDirectoryEntries(HANDLE directory_handle) {
   const char* directory_info_pointer = directory_info_buffer.data();
   DWORD next_entry_offset = 0;
 
-  if (!directory_info_buffer) {
-    SB_LOG(INFO) << "dir info buffer is null";
+  if (directory_info_buffer.size() == 0) {
+    SB_LOG(INFO) << "dir info buffer is empty";
   }
 
   if (!directory_info_pointer) {
