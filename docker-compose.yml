@@ -137,6 +137,16 @@ services:
       PLATFORM: stub
       CONFIG: ${CONFIG:-debug}
 
+  build-linux:
+    <<: *build-common-definitions
+    build:
+      context: ./docker/linux
+      dockerfile: linux-x64x11/Dockerfile
+    image: cobalt-build-linux
+    depends_on: [ build-base ]
+    environment:
+      <<: *shared-build-env
+ 
   linux-x64x11:
     <<: *build-common-definitions
     build:
