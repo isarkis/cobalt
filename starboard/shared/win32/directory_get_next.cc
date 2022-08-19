@@ -73,6 +73,7 @@ std::deque<std::string> GetDirectoryEntries(HANDLE directory_handle) {
     DWORD number_characters_in_filename = directory_info->FileNameLength / 2;
     std::string ascii_path = starboard::shared::win32::wchar_tToUTF8(
         directory_info->FileName, number_characters_in_filename);
+    SB_LOG(INFO) << "ascii path is " << ascii_path;
     SB_DCHECK(ascii_path.size() == number_characters_in_filename);
     bool is_dotted_directory =
         !ascii_path.compare(".") || !ascii_path.compare("..");
