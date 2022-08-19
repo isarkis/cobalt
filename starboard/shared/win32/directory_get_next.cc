@@ -45,6 +45,7 @@ std::deque<std::string> GetDirectoryEntries(HANDLE directory_handle) {
   } else {
     SB_LOG(INFO) << "Failed to get dirs";
   }
+  SB_LOG(INFO) << "Entries size is: " << entries.size();
   for (int i = 0; i < entries.size(); i++) {
     SB_LOG(INFO) << "Entry " << i << " is " << entries[i];
   }
