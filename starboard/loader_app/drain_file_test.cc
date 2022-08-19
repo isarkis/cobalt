@@ -207,9 +207,12 @@ TEST_F(DrainFileTest, SunnyDayPrepareDirectory) {
 // Creating a new drain file in the same directory as an existing, valid drain
 // file should fail.
 TEST_F(DrainFileTest, RainyDayDrainFileAlreadyExists) {
+  SB_LOG(INFO) << "Starting test";
   EXPECT_TRUE(DrainFileTryDrain(GetTempDir(), kAppKeyOne));
+  SB_LOG(INFO) << "Middle of test";
   // SbThreadSleep(kSbTimeSecond * 60 * 2);
   EXPECT_FALSE(DrainFileTryDrain(GetTempDir(), kAppKeyTwo));
+  SB_LOG(INFO) << "Ending test";
 }
 
 }  // namespace
