@@ -39,7 +39,7 @@ class DrainFileTest : public ::testing::Test {
  protected:
   void SetUp() override {
     temp_dir_.resize(kSbFileMaxPath);
-    ASSERT_TRUE(SbSystemGetPath(kSbSystemPathTempDirectory, temp_dir_.data(),
+    ASSERT_TRUE(SbSystemGetPath(kSbSystemPathCacheDirectory, temp_dir_.data(),
                                 temp_dir_.size()));
   }
 
