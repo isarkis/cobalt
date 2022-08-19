@@ -240,6 +240,15 @@ services:
       CONFIG: ${CONFIG:-debug}
       TARGET_CPU: ${TARGET_CPU:-arm64}
 
+  build-raspi:
+    <<: *build-common-definitions
+    build:
+      context: ./docker/linux/raspi
+      dockerfile: ./Dockerfile
+    image: cobalt-build-raspi
+    environment:
+      <<: *shared-build-env
+
   raspi:
     <<: *build-common-definitions
     build:
