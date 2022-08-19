@@ -90,6 +90,10 @@ bool SbDirectoryGetNext(SbDirectory directory,
   }
 
   auto& next_directory_entries = directory->next_directory_entries;
+  SB_LOG(INFO) << "next_directory_entries size is " << next_directory_entries.size();
+  for (int i = 0; i < next_directory_entries.size(); i++) {
+    SB_LOG(INFO) << "Entry " << i << " is " << next_directory_entries[i];
+  }
   if (next_directory_entries.empty()) {
     SB_LOG(INFO) << "Getting dir entries";
     next_directory_entries = GetDirectoryEntries(directory->directory_handle);
