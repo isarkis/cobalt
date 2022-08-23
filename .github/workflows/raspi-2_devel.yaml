@@ -1,0 +1,19 @@
+name: raspi-2_devel
+
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+    branches:
+      - 'devel'
+  push:
+    branches:
+      - 'devel'
+  workflow_dispatch:
+
+jobs:
+  CI:
+    uses: ./.github/workflows/main.yaml
+    permissions:
+      packages: write
+    with:
+      platform: raspi-2

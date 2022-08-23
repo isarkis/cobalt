@@ -1,0 +1,46 @@
+name: Docker Image Build
+description: Builds Cobalt build docker images.
+inputs:
+  service:
+    description: "Service name from docker compose."
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Get docker file changes
+      id: changed-files
+      uses: tj-actions/changed-files@v13.1
+      with:
+        files: |
+          docker-compose-windows.yml
+          docker/windows/**
+          .github/actions/docker_win/**
+    - name: Retrieve Docker metadata
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{env.REGISTRY}}/${{github.repository_owner}}/cobalt-${{inputs.service}}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=tag
+          type=ref,event=pr
+    - name: Build containers with docker-compose
+      if: steps.changed-files.outputs.any_changed == 'true'
+      uses: smartlyio/docker-compose-action@v1
+      env:
+        DOCKER_CPUS: 2
+      with:
+        serviceName: ${{inputs.service}}
+        build: false
+        push: "on:push"
+        composeArguments: "--no-start"
+        composeFile: "docker-compose-windows.yml"
+    - name: Tag images
+      if: steps.changed-files.outputs.any_changed == 'true'
+      run: |
+        docker tag cobalt-${{inputs.service}} ${{steps.meta.outputs.tags}}
+      shell: bash
+    - name: Push images
+      if: ${{ (steps.changed-files.outputs.any_changed == 'true') }}
+      run: docker push ${{steps.meta.outputs.tags}}
+      shell: bash
