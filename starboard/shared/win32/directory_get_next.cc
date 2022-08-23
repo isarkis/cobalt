@@ -33,12 +33,18 @@ std::deque<std::string> GetDirectoryEntries(HANDLE directory_handle) {
   // https://msdn.microsoft.com/en-us/library/windows/desktop/aa364226(v=vs.85).aspx,
   // FILE_ID_BOTH_DIR_INFO must be aligned on a DWORDLONG boundary.
   alignas(sizeof(DWORDLONG)) std::vector<char> directory_info_buffer(
-      kDirectoryInfoBufferSize);
+      kDirectoryInfoBufferSize * 4);
 
   std::deque<std::string> entries;
   BOOL directory_info_success = GetFileInformationByHandleEx(
       directory_handle, FileIdBothDirectoryInfo, directory_info_buffer.data(),
       static_cast<int>(directory_info_buffer.size()));
+
+  if (directory_info_success) {
+    SB_LOG(INFO) << "Successfully got dirs";
+  } else {
+    SB_LOG(INFO) << "Failed to get dirs";
+  }
 
   if (!directory_info_success) {
     return entries;
@@ -47,14 +53,27 @@ std::deque<std::string> GetDirectoryEntries(HANDLE directory_handle) {
   const char* directory_info_pointer = directory_info_buffer.data();
   DWORD next_entry_offset = 0;
 
+  if (directory_info_buffer.size() == 0) {
+    SB_LOG(INFO) << "dir info buffer is empty";
+  }
+
+  if (!directory_info_pointer) {
+    SB_LOG(INFO) << "dir info pointer is null";
+  }
+
   do {
+    SB_LOG(INFO) << "Starting loop with next_entry_offset: " << next_entry_offset;
     auto directory_info =
         reinterpret_cast<const FILE_ID_BOTH_DIR_INFO*>(directory_info_pointer);
+    if (!directory_info) {
+      SB_LOG(INFO) << "dir info is null";
+    }
 
     // FileName is in Unicode, so divide by 2 to get the real length.
     DWORD number_characters_in_filename = directory_info->FileNameLength / 2;
     std::string ascii_path = starboard::shared::win32::wchar_tToUTF8(
         directory_info->FileName, number_characters_in_filename);
+    SB_LOG(INFO) << "ascii path is " << ascii_path;
     SB_DCHECK(ascii_path.size() == number_characters_in_filename);
     bool is_dotted_directory =
         !ascii_path.compare(".") || !ascii_path.compare("..");
@@ -65,6 +84,7 @@ std::deque<std::string> GetDirectoryEntries(HANDLE directory_handle) {
     directory_info_pointer += next_entry_offset;
   } while (next_entry_offset != 0);
 
+  SB_LOG(INFO) << "Entries size is: " << entries.size();
   return entries;
 }
 
@@ -75,21 +95,29 @@ bool SbDirectoryGetNext(SbDirectory directory,
                         size_t out_entry_size) {
   if (!SbDirectoryIsValid(directory) || out_entry == nullptr ||
       out_entry_size < kSbFileMaxName) {
+    SB_LOG(INFO) << "Returning early, invalid SbDirectoryGetNext call";
     return false;
   }
 
   auto& next_directory_entries = directory->next_directory_entries;
+  // SB_LOG(INFO) << "next_directory_entries size is " << next_directory_entries.size();
+  // for (int i = 0; i < next_directory_entries.size(); i++) {
+  //   SB_LOG(INFO) << "Entry " << i << " is " << next_directory_entries[i];
+  // }
   if (next_directory_entries.empty()) {
+    SB_LOG(INFO) << "Getting dir entries";
     next_directory_entries = GetDirectoryEntries(directory->directory_handle);
   }
 
   if (next_directory_entries.empty()) {
+    SB_LOG(INFO) << "next_directories_entries is empty";
     return false;
   }
 
   bool success = true;
   if (starboard::strlcpy(out_entry, next_directory_entries.rbegin()->c_str(),
                          static_cast<int>(out_entry_size)) >= out_entry_size) {
+    SB_LOG(INFO) << "Failed strlcpy";
     success = false;
   }
   directory->next_directory_entries.pop_back();

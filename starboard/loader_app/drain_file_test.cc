@@ -23,6 +23,7 @@
 #include "starboard/directory.h"
 #include "starboard/loader_app/drain_file_helper.h"
 #include "starboard/system.h"
+#include "starboard/thread.h"
 #include "starboard/types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -38,7 +39,7 @@ class DrainFileTest : public ::testing::Test {
  protected:
   void SetUp() override {
     temp_dir_.resize(kSbFileMaxPath);
-    ASSERT_TRUE(SbSystemGetPath(kSbSystemPathTempDirectory, temp_dir_.data(),
+    ASSERT_TRUE(SbSystemGetPath(kSbSystemPathCacheDirectory, temp_dir_.data(),
                                 temp_dir_.size()));
   }
 
@@ -206,8 +207,12 @@ TEST_F(DrainFileTest, SunnyDayPrepareDirectory) {
 // Creating a new drain file in the same directory as an existing, valid drain
 // file should fail.
 TEST_F(DrainFileTest, RainyDayDrainFileAlreadyExists) {
+  SB_LOG(INFO) << "Starting test";
   EXPECT_TRUE(DrainFileTryDrain(GetTempDir(), kAppKeyOne));
+  SB_LOG(INFO) << "Middle of test";
+  // SbThreadSleep(kSbTimeSecond * 60 * 2);
   EXPECT_FALSE(DrainFileTryDrain(GetTempDir(), kAppKeyTwo));
+  SB_LOG(INFO) << "Ending test";
 }
 
 }  // namespace
