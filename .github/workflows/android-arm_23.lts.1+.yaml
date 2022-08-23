@@ -14,4 +14,4 @@ jobs:
     permissions:
       packages: write
     with:
-      platform: $GITHUB_WORKFLOW
+      platform: android-arm
