@@ -60,7 +60,6 @@ runs:
         set -x
         set +e
         docker manifest inspect $DOCKER_TAG > /dev/null
-        set -e
         if [[ $? -ne 0 || ${{ steps.changed-files.outputs.any_changed }} == 'true' ]]; then
           echo "::set-output name=need_to_build::true"
         else
