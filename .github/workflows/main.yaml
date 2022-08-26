@@ -110,10 +110,12 @@ jobs:
       - name: Build Cobalt
         uses: ./.github/actions/build
       - name: Upload Nightly Artifacts
-        if: ${{ contains(github.workflow, '_nightly') && matrix.config != 'debug' }}
+        if: ${{ endsWith(github.workflow, '_nightly') && matrix.config != 'debug' }}
         uses: ./.github/actions/upload_nightly_artifacts
       - name: Upload Test Artifacts
-        if: ${{ matrix.config == 'devel' && needs.build-matrix.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push') }}
+        id: upload-test-artifacts
+        if: ${{ matrix.config == 'devel' }}
+        # TODO: revert back if: ${{ matrix.config == 'devel' && needs.build-matrix.outputs.on_device_test == 'true' && (endsWith(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push') }}
         uses: ./.github/actions/upload_test_artifacts
 
   # Runs on-device tests.
@@ -121,13 +123,14 @@ jobs:
     needs: [docker-image, build-matrix, build]
     # TODO: revert back if: needs.build-matrix.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push')
     runs-on: [self-hosted, linux, X64]
-    name: On Device Test (dummy)
-    # strategy:
-    #   fail-fast: false
-    #   matrix:
-    #     platform: ${{ fromJson(needs.build-matrix.outputs.platforms) }}
-    #     type: [unit_test, integration_test]
-    #     include: ${{ fromJson(needs.build-matrix.outputs.includes) }}
+    name: On Device Test
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ${{ fromJson(needs.build-matrix.outputs.platforms) }}
+        type: [unit_test, integration_test]
+        config: [devel, debug, qa, gold]
+        include: ${{ fromJson(needs.build-matrix.outputs.includes) }}
     container: ${{ needs.docker-image.outputs.docker_tag }}
     steps:
       - name: Checkout
@@ -142,25 +145,33 @@ jobs:
         run: |
           pip3 install grpcio grpcio-tools
         shell: bash
-      - name: Debug hostname
+      - name: Debug
         run: |
-          hostname
+          echo "${{ steps.upload-test-artifacts.outputs.archive_path }}"
         shell: bash
-      - name: run dummy test
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+      - name: Set env vars
+        run: |
+          echo "PROJECT_NAME=$(gcloud config get-value project)" >> $GITHUB_ENV
+          echo "GITHUB_RUN_NUMBER=${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
+          echo "WORKFLOW=${{github.workflow}}" >> $GITHUB_ENV
+          echo "PYTHONPATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+      - name: run ${{matrix.type}} tests on ${{matrix.platform}} test
         run: |
           python3 tools/mobile_harness_gateway.py \
-            --test_type unit_test \
-            --platform android-arm64 \
+            --platform ${{matrix.platform}} \
+            --test_type ${{matrix.type}} \
+            --config ${{matrix.config}} \
+            --change_id ${{ github.head_ref }}.${{ github.sha }} \
             --gateway_exit_status DONE \
             --run_as youtube-cobalt-mh-owner \
-            --remote_archive_path gs://cobalt-actions-devel-test-artifacts/android-arm64/104/artifacts.tar \
+            --remote_archive_path "gs://${{env.PROJECT_NAME}}-test-artifacts/${{env.WORKFLOW}}/${{env.GITHUB_RUN_NUMBER}}/artifacts.tar" \
             --branch COBALT \
-            --config devel \
-            --tag cobalt_postsubmit \
-            --sponge_label cobalt_postsubmit \
-            --change_id "" \
-            --builder_name android-arm64_tests \
-            --build_number 2939 \
+            --tag github_${{ github.head_ref }}_pr \
+            --sponge_label github,${{ github.head_ref }},${{env.PROJECT_NAME}},${{ github.sha }},${{ github.head_ref }},${{env.WORKFLOW}},RUN_${{env.GITHUB_RUN_NUMBER}} \
+            --builder_name ${{ matrix.platform }}_tests \
+            --build_number ${{env.GITHUB_RUN_NUMBER}} \
             --start_timeout 10h \
             --docker
         shell: bash
