@@ -1,0 +1,58 @@
+name: Find a comment
+description: Finds a specific collaborator comment in PR
+inputs:
+  text:
+    description: 'Text to find'
+    required: true
+  curl_path:
+    description: 'Where to temporarily save the fetched comments'
+    required: true
+    default: /tmp/comments.json
+outputs:
+  found:
+    description: "Shows whether text was found in issue comments"
+    value: ${{ steps.found-setter.outputs.found }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Debug comments link
+      run: |
+        echo "${{ github.event.pull_request._links.comments.href }}"
+      shell: bash
+
+    - name: Get PR comments
+      run: |
+        curl -s '${{ github.event.pull_request._links.comments.href }}' > ${{ inputs.curl_path }}
+      shell: bash
+
+    - name: Debug
+      run: |
+        cat ${{ inputs.curl_path }}
+      shell: bash
+
+    - name: Get matching text comment
+      id: matching_comment
+      run: |
+        echo "::set-output name=matching_comment::$( cat ${{ inputs.curl_path }} |  jq -c '[ .[] | select( .body | contains("${{ inputs.text }}")) | select(.author_association == "COLLABORATOR") ]' )"
+      shell: bash
+
+    - name: Set output
+      id: found-setter
+      run: |
+        if [[ "${{ steps.matching_comment.outputs.matching_comment }}" == "[]" ]]; then
+          echo ::set-output name=found::false
+        else
+          echo ::set-output name=found::true
+        fi
+      shell: bash
+
+      # - name: debug output
+      #   run: |
+      #     echo ${{ steps.fc.outputs.comment-id }}
+      #     echo ${{ steps.fc.outputs.comment-body }}
+      #     echo ${{ steps.fc.outputs.comment-author }}
+
+      # - name: is valid author
+      #   run: |
+      #     echo "${{ contains(fromJson('["iamjazzar", "isarkis"]'), steps.fc.outputs.comment-author) }}"

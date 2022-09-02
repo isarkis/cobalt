@@ -1,16 +1,20 @@
 name: test_comment
 on:
-  issue_comment:                                     
+  issue_comment:
     types: [created]
 
 jobs:
- test1:
-   if: contains(github.event.comment.body, '/test')
-   runs-on: [ubuntu-latest]
-   steps:
-     - name: say hello
-       run: |
-         echo say hello
-     - name: test
-       run: |
-         echo test
+  pr_commented:
+    name: PR comment
+    if: ${{ github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "${{ github.event.action }}"
+
+  # CI:
+  #   uses: ./.github/workflows/main.yaml
+  #   permissions:
+  #     packages: write
+  #   with:
+  #     platform: linux

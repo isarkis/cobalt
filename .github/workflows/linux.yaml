@@ -6,13 +6,22 @@ on:
     branches: [ main ]
   push:
     branches: [ main ]
+  issue_comment:
+    types: [ created, edited ]
   workflow_dispatch:
 
 jobs:
-  CI:
-    uses: ./.github/workflows/main.yaml
-    permissions:
-      packages: write
-    with:
-      platform: $GITHUB_WORKFLOW
+  pr_commented:
+    name: PR comment
+    if: ${{ github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "${{ github.event.action }}"
 
+  # CI:
+  #   uses: ./.github/workflows/main.yaml
+  #   permissions:
+  #     packages: write
+  #   with:
+  #     platform: $GITHUB_WORKFLOW

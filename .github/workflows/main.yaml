@@ -245,3 +245,45 @@ jobs:
           else
             xvfb-run -a --server-args="-screen 0 1920x1080x24i +render +extension GLX -noreset" python3 $GITHUB_WORKSPACE/starboard/tools/testing/test_runner.py --platform ${{matrix.target_platform}} --config ${{matrix.config}} -s ${{matrix.shard}} -r ${loader_args}
           fi
+
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Find Comment
+        uses: ./.github/actions/find_comment
+        id: fc_1
+        with:
+          text: '/test'
+
+      - name: Debug fc_1
+        run: |
+          echo "${{ steps.fc_1.outputs.found }}"
+        shell: bash
+
+      - name: execute if found
+        if: steps.fc_1.outputs.found == true
+        run: |
+          echo "found"
+        shell: bash
+
+      - name: Find Comment
+        uses: ./.github/actions/find_comment
+        id: fc_2
+        with:
+          text: '/not there'
+
+      - name: Debug fc_2
+        run: |
+          echo "${{ steps.fc_2.outputs.found }}"
+        shell: bash
+
+      - name: execute if found
+        if: steps.fc_2.outputs.found == true
+        run: |
+          echo "found"
+        shell: bash
