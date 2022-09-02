@@ -121,7 +121,7 @@ jobs:
   # Runs on-device tests.
   on-device-test:
     needs: [docker-image, build-matrix, build]
-    # TODO: revert back if: needs.build-matrix.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push')
+    if: needs.build-matrix.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push')
     runs-on: [self-hosted, linux, X64]
     name: On Device Test
     strategy:
@@ -166,7 +166,7 @@ jobs:
             --change_id ${{ github.head_ref }}.${{ github.sha }} \
             --gateway_exit_status DONE \
             --run_as youtube-cobalt-mh-owner \
-            --remote_archive_path gs://mh_testing_tmp/manual_testing/android-arm64_tests/2939/android-arm64_devel_unit_tests/artifacts.tar \
+            --remote_archive_path gs://${{env.PROJECT_NAME}}-test-artifacts/${{env.WORKFLOW}}/${{env.GITHUB_RUN_NUMBER}}/artifacts.tar \
             --branch COBALT \
             --tag github_${{ github.head_ref }}_pr \
             --sponge_label github,${{ github.head_ref }},${{env.PROJECT_NAME}},${{ github.sha }},${{ github.head_ref }},${{env.WORKFLOW}},RUN_${{env.GITHUB_RUN_NUMBER}} \
