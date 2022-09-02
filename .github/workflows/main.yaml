@@ -10,6 +10,10 @@ on:
         required: true
         type: string
 
+concurrency:
+  group: ${{ github.ref }}_${{ github.workflow }}
+  cancel-in-progress: true
+
 # Global env vars.
 env:
   REGISTRY: ghcr.io
@@ -180,7 +184,7 @@ jobs:
   # Runs on-device tests.
   on-device-test:
     needs: [initialize, build]
-    if: needs.initialize.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push') 
+    if: needs.initialize.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push')
     runs-on: [self-hosted, linux, X64]
     name: ${{matrix.platform}}_${{matrix.type}}
     strategy:
