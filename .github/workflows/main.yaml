@@ -114,8 +114,7 @@ jobs:
         uses: ./.github/actions/upload_nightly_artifacts
       - name: Upload Test Artifacts
         id: upload-test-artifacts
-        if: ${{ matrix.config == 'devel' }}
-        # TODO: revert back if: ${{ matrix.config == 'devel' && needs.build-matrix.outputs.on_device_test == 'true' && (endsWith(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push') }}
+        if: ${{ matrix.config == 'devel' && needs.build-matrix.outputs.on_device_test == 'true' && (endsWith(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push') }}
         uses: ./.github/actions/upload_test_artifacts
 
   # Runs on-device tests.
