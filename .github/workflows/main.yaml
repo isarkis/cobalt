@@ -30,6 +30,7 @@ env:
 jobs:
   # Builds, tags, and pushes Cobalt docker images to ghr.
   docker-image:
+    if: github.event.pull_request.draft == false
     permissions:
       packages: write
     runs-on: ubuntu-latest
@@ -58,6 +59,7 @@ jobs:
       docker_tag: ${{steps.set-docker-tag-output.outputs.docker_tag}}
   # Generates build matrix based on json configuration file.
   build-matrix:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - id: checkout
@@ -85,6 +87,7 @@ jobs:
       on_host_test_bootloader: ${{ steps.set-on-host-test-bootloader.outputs.on_host_test_bootloader }}
   # Runs builds.
   build:
+    if: github.event.pull_request.draft == false
     needs: [docker-image, build-matrix]
     runs-on: [self-hosted, linux, X64]
     name: ${{matrix.platform}}_${{matrix.config}}
@@ -141,7 +144,14 @@ jobs:
   # Runs on-device tests.
   on-device-test:
     needs: [docker-image, build-matrix, build]
-    if: needs.build-matrix.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push')
+    if: |
+      github.event.pull_request.draft == false &&
+      needs.build-matrix.outputs.on_device_test == 'true' &&
+      (
+        contains(github.workflow, '_nightly') ||
+        github.event.label.name == 'runtest' ||
+        github.event_name == 'push'
+      )
     runs-on: [self-hosted, linux, X64]
     name: ${{matrix.platform}}_${{matrix.type}}
     strategy:
@@ -160,7 +170,9 @@ jobs:
   # Runs on-host integration and unit tests.
   on-host-test:
     needs: [docker-image, build-matrix, build]
-    if: needs.build-matrix.outputs.on_host_test == 'true'
+    if: |
+      needs.build-matrix.outputs.on_host_test == 'true' &&
+      github.event.pull_request.draft == false
     runs-on: [self-hosted, linux, X64]
     name: ${{matrix.platform}}_${{matrix.shard}}_test
     strategy:

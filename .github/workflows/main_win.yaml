@@ -31,6 +31,7 @@ env:
 jobs:
   # Generates build matrix based on json configuration file.
   build-matrix:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - id: Checkout
@@ -85,6 +86,7 @@ jobs:
           service: ${{ needs.build-matrix.outputs.docker_runner_service }}
   # Runs builds.
   build:
+    if: github.event.pull_request.draft == false
     needs: [docker-image, build-matrix]
     runs-on: [self-hosted, X64, Windows]
     name: ${{matrix.platform}}_${{matrix.config}}
@@ -108,6 +110,7 @@ jobs:
         uses: ./.github/actions/upload_nightly_artifacts
   # Runs on the host unit and integration tests.
   on-host-test:
+    if: github.event.pull_request.draft == false
     needs: [docker-image, build-matrix]
     if: needs.build-matrix.outputs.on_host_test == 'true'
     runs-on: [self-hosted, Windows, X64]
