@@ -21,25 +21,33 @@ runs:
           PLATFORM=${COBALT_BOOTLOADER}
           echo "TARGET_PLATFORM=${COBALT_BOOTLOADER}" >> $GITHUB_ENV
         fi
-        
+
         if [ "${{ inputs.type }}" == 'ondevice' ]
         then
           echo "ARCHIVE_FILE_PATH=$GITHUB_WORKSPACE/builder_tmp/${PLATFORM}_${{matrix.config}}/artifacts.tar" >> $GITHUB_ENV
         elif [ "${{ inputs.type }}" == 'onhost' ]
         then
+<<<<<<< HEAD
           echo "ARCHIVE_FILE_PATH=$GITHUB_WORKSPACE/out/tmp/${PLATFORM}_${{matrix.config}}/${PLATFORM}_${{matrix.config}}.tar.xz" >> $GITHUB_ENV
+=======
+          echo "ARCHIVE_FILE_PATH=$GITHUB_WORKSPACE/src/out/tmp/${PLATFORM}_${{matrix.config}}/${PLATFORM}_${{matrix.config}}.tar.xz" >> $GITHUB_ENV
+>>>>>>> b9b68ca359 (Fix bootloader artifact upload mechanism.)
         fi
 
         echo "PYTHONPATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
         project_name=$(gcloud config get-value project)
+<<<<<<< HEAD
         echo "DESTINATION_PATH=${project_name}-test-artifacts/${{github.workflow}}/${GITHUB_RUN_NUMBER}/${{matrix.platform}}_${{matrix.config}}/" >> $GITHUB_ENV
+=======
+        echo "DESTINATION_PATH=${project_name}-test-artifacts/${{github.workflow}}/${GITHUB_RUN_NUMBER}/${PLATFORM}_${{matrix.config}}/" >> $GITHUB_ENV
+>>>>>>> b9b68ca359 (Fix bootloader artifact upload mechanism.)
       shell: bash
     - name: Create Test Files Archive
       run: |
         set -x
         if [ "${{ inputs.type }}" == 'ondevice' ]
         then
-          python3 $GITHUB_WORKSPACE/tools/create_archive.py --test_infra -d ${{env.ARCHIVE_FILE_PATH}} -s $GITHUB_WORKSPACE/out/${{matrix.target_platform}}_${{matrix.config}}
+          python3 $GITHUB_WORKSPACE/tools/create_archive.py --test_infra -d ${{env.ARCHIVE_FILE_PATH}} -s $GITHUB_WORKSPACE/out/${TARGET_PLATFORM}_${{matrix.config}}
         elif [ "${{ inputs.type }}" == 'onhost' ]
         then
           python3 $GITHUB_WORKSPACE/tools/create_archive.py --intermediate -d ${{env.ARCHIVE_FILE_PATH}} -s $GITHUB_WORKSPACE/out/${TARGET_PLATFORM}_${{matrix.config}} --parallel
