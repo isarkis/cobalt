@@ -14,7 +14,7 @@ runs:
     - name: GN
       run: |
         set -x
-        if [ -z ${COBALT_BOOTLOADER+x} ]; then
+        if [ "${COBALT_BOOTLOADER}" == "null" ]; then
           BUILD_PLATFORM=${{ matrix.target_platform }}
         else
           BUILD_PLATFORM=${COBALT_BOOTLOADER}

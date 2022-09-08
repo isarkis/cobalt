@@ -41,7 +41,7 @@ runs:
       run: |
         set -x
         loader_args=''
-        if [ ! -z ${COBALT_BOOTLOADER+x} ]; then
+        if [ "${COBALT_BOOTLOADER}" != "null" ]; then
           loader_args="--loader_platform ${COBALT_BOOTLOADER} --loader_config ${{matrix.config}}"
         fi
         if [[ "${{matrix.shard}}" == 'integration' ]]; then

@@ -13,7 +13,7 @@ runs:
       run: |
         set -x
         project_name=$(gcloud config get-value project)
-        if [ -z ${COBALT_BOOTLOADER+x} ]
+        if [ "${COBALT_BOOTLOADER}" == "null" ]
         then
           PLATFORM=${{matrix.platform}}
           echo "TARGET_PLATFORM=${{matrix.target_platform}}" >> $GITHUB_ENV
