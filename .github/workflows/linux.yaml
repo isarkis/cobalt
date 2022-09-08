@@ -6,34 +6,12 @@ on:
     branches: [ main ]
   push:
     branches: [ main ]
-  issue_comment:
-    types: [ created, edited ]
   workflow_dispatch:
 
 jobs:
-  pr_commented:
-    name: PR comment
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo "${{ github.event.action }}"
-        shell: bash
-      - run: |
-          echo "body ${{ github.event.comment.body }}"
-        shell: bash
-      - run: |
-          echo "is pull request: ${{ github.event.issue.pull_request }}"
-        shell: bash
-      - run: |
-          echo "issue number: ${{ github.event.issue.number }}"
-        shell: bash
-      - run: |
-          echo "Github body: ${{ toJson(github) }}"
-        shell: bash
-
-  # CI:
-  #   uses: ./.github/workflows/main.yaml
-  #   permissions:
-  #     packages: write
-  #   with:
-  #     platform: $GITHUB_WORKFLOW
+  CI:
+    uses: ./.github/workflows/main.yaml
+    permissions:
+      packages: write
+    with:
+      platform: $GITHUB_WORKFLOW
