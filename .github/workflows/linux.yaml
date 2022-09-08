@@ -13,11 +13,23 @@ on:
 jobs:
   pr_commented:
     name: PR comment
-    if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
       - run: |
           echo "${{ github.event.action }}"
+        shell: bash
+      - run: |
+          echo "body ${{ github.event.comment.body }}"
+        shell: bash
+      - run: |
+          echo "is pull request: ${{ github.event.issue.pull_request }}"
+        shell: bash
+      - run: |
+          echo "issue number: ${{ github.event.issue.number }}"
+        shell: bash
+      - run: |
+          echo "Github body: ${{ toJson(github) }}"
+        shell: bash
 
   # CI:
   #   uses: ./.github/workflows/main.yaml
