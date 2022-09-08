@@ -100,7 +100,6 @@ jobs:
       # However, dind container ends up having / folder mounted on overlay
       # filesystem, whereas /__w which contains Cobalt source code is on tmpfs.
       TMPDIR: /__w/_temp
-      COBALT_BOOTLOADER: ${{needs.build-matrix.outputs.on_host_test_bootloader}}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -125,13 +124,19 @@ jobs:
           type: onhost
       # Build bootloader if neccessary.
       - name: Bootloader GN
-        if: env.COBALT_BOOTLOADER != 'null'
+        if: needs.build-matrix.outputs.on_host_test_bootloader != 'null'
+        env:
+          COBALT_BOOTLOADER: ${{needs.build-matrix.outputs.on_host_test_bootloader}}
         uses: ./.github/actions/gn
       - name: Build Bootloader
-        if: env.COBALT_BOOTLOADER != 'null'
+        if: needs.build-matrix.outputs.on_host_test_bootloader != 'null'
+        env:
+          COBALT_BOOTLOADER: ${{needs.build-matrix.outputs.on_host_test_bootloader}}
         uses: ./.github/actions/build
       - name: Upload Bootloader On Host Test Artifacts
-        if: ${{ env.COBALT_BOOTLOADER != 'null' && matrix.config == 'devel' && needs.build-matrix.outputs.on_host_test == 'true' }}
+        if: ${{ needs.build-matrix.outputs.on_host_test_bootloader != 'null' && matrix.config == 'devel' && needs.build-matrix.outputs.on_host_test == 'true' }}
+        env:
+          COBALT_BOOTLOADER: ${{needs.build-matrix.outputs.on_host_test_bootloader}}
         uses: ./.github/actions/upload_test_artifacts
         with:
           type: onhost
