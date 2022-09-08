@@ -9,6 +9,11 @@ on:
         description: 'Cobalt platform.'
         required: true
         type: string
+      on_device_only:
+        description: 'Whether to trigger on device tests only or not.'
+        required: true
+        default: false
+        type: boolean
 
 concurrency:
   group: ${{ github.ref }}

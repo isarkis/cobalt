@@ -1,7 +1,7 @@
 name: test_comment
 on:
   issue_comment:
-    types: [created]
+    types: [ created, edited ]
 
 jobs:
   pr_commented:
@@ -25,9 +25,11 @@ jobs:
           echo "Github body: ${{ toJson(github) }}"
         shell: bash
 
-  # CI:
-  #   uses: ./.github/workflows/main.yaml
-  #   permissions:
-  #     packages: write
-  #   with:
-  #     platform: linux
+  CI:
+    if: contains(github.event.comment.body, '/test')
+    uses: ./.github/workflows/main.yaml
+    permissions:
+      packages: write
+    with:
+      platform: $GITHUB_WORKFLOW
+      on_device_only: true
