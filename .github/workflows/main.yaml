@@ -9,6 +9,11 @@ on:
         description: 'Cobalt platform.'
         required: true
         type: string
+      run_test_labs:
+        description: 'Whether to run test labs or not.'
+        required: true
+        default: false
+        type: boolean
 
 concurrency:
   group: ${{ github.ref }}
@@ -145,7 +150,14 @@ jobs:
   # Runs on-device tests.
   on-device-test:
     needs: [docker-image, build-matrix, build]
-    if: needs.build-matrix.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push') 
+    if: |
+      inputs.run_test_labs &&
+      needs.build-matrix.outputs.on_device_test == 'true' &&
+      (
+        contains(github.workflow, '_nightly') ||
+        github.event.label.name == 'runtest' ||
+        github.event_name == 'push'
+      )
     runs-on: [self-hosted, linux, X64]
     name: ${{matrix.platform}}_${{matrix.type}}
     strategy:

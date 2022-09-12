@@ -2,17 +2,32 @@ name: linux
 
 on:
   pull_request:
-    types: [ready_for_review]
+    types: [ready_for_review, labeled]
     branches: [ main ]
   push:
     branches: [ main ]
   workflow_dispatch:
 
 jobs:
+  triage:
+    name: Triaging the PR
+    runs-on: [ubuntu-latest]
+    if: github.event.label.name == 'test_labs'
+    steps:
+      - name: Remove test_labs label
+        run: |
+          curl \
+            -X DELETE \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            ${{ github.event.pull_request.base.repo.url }}/issues/${{ github.event.number }}/labels/${{ github.event.label.name }}
+        shell: bash
+
   CI:
+    needs: triage
     uses: ./.github/workflows/main.yaml
     permissions:
       packages: write
     with:
       platform: $GITHUB_WORKFLOW
-
+      run_test_labs: ${{ needs.initialize.result == 'success' }}
