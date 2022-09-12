@@ -2,7 +2,7 @@ name: linux-gcc-6-3
 
 on:
   pull_request:
-    types: [opened, reopened, edited, synchronize]
+    types: [ready_for_review]
     branches: [ main ]
   push:
     branches: [ main ]
