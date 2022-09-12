@@ -35,11 +35,34 @@ jobs:
   # Retrieves configuration from json file.
   initialize:
     runs-on: ubuntu-latest
+    if: |
+      github.event.action == 'ready_for_review' ||
+      (
+        github.event.action == 'synchronize' &&
+        !github.event.pull_request.draft
+      ) ||
+      (
+        github.event.action == 'labeled' &&
+        github.event.label.name == 'on_device' &&
+        !github.event.pull_request.draft
+      ) ||
+      (
+        github.event.action == 'labeled' &&
+        github.event.label.name == 'runtest'
+      )
     steps:
       - id: checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
+      - name: Remove runtest if exists
+        run: |
+          curl \
+            -X DELETE \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            ${{ github.event.pull_request.base.repo.url }}/issues/${{ github.event.number }}/labels/runtest
+        shell: bash
       - id: set-platforms
         run: echo "::set-output name=platforms::$(cat ${GITHUB_WORKSPACE}/.github/config/${{ inputs.platform }}.json | jq -c '.platforms')"
       - id: set-includes
@@ -57,8 +80,8 @@ jobs:
     outputs:
       platforms: ${{ steps.set-platforms.outputs.platforms }}
       includes: ${{ steps.set-includes.outputs.includes }}
-      on_device_test: ${{ steps.set-on-device-test.outputs.on_device_test }}
-      on_host_test: ${{ steps.set-on-host-test.outputs.on_host_test }}
+      on_device_test: ${{ steps.set-on-device-test.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || contains(github.event.pull_request.labels.*.name, 'on_device')) }}
+      on_host_test: ${{ steps.set-on-host-test.outputs.on_host_test == 'true' }}
       on_host_test_shards: ${{ steps.set-on-host-test-shards.outputs.on_host_test_shards }}
       on_host_test_bootloader: ${{ steps.set-on-host-test-bootloader.outputs.on_host_test_bootloader }}
       docker_service: ${{ steps.set-docker-service.outputs.docker_service }}
@@ -156,7 +179,7 @@ jobs:
         if: ${{ contains(github.workflow, '_nightly') && matrix.config != 'debug' }}
         uses: ./.github/actions/upload_nightly_artifacts
       - name: Upload On Device Test Artifacts
-        if: ${{ matrix.config == 'devel' && needs.initialize.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push') }}
+        if: ${{ matrix.config == 'devel' && needs.initialize.outputs.on_device_test == 'true' }}
         uses: ./.github/actions/upload_test_artifacts
         with:
           type: ondevice
@@ -184,7 +207,7 @@ jobs:
   # Runs on-device tests.
   on-device-test:
     needs: [initialize, build]
-    if: needs.initialize.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push')
+    if: needs.initialize.outputs.on_device_test == 'true'
     runs-on: [self-hosted, linux, X64]
     name: ${{matrix.platform}}_${{matrix.type}}
     strategy:
