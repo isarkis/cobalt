@@ -26,6 +26,7 @@ jobs:
   CI:
     needs: triage
     uses: ./.github/workflows/main.yaml
+    if: always()
     permissions:
       packages: write
     with:
