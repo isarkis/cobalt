@@ -180,48 +180,35 @@ jobs:
   # Runs on-device tests.
   on-device-test:
     needs: [initialize, build]
-    if: needs.initialize.outputs.on_device_test == 'true' && (contains(github.workflow, '_nightly') || github.event.label.name == 'runtest' || github.event_name == 'push') 
     runs-on: [self-hosted, linux, X64]
     name: ${{matrix.platform}}_${{matrix.type}}
     strategy:
       fail-fast: false
-      matrix:
-        platform: ${{ fromJson(needs.initialize.outputs.platforms) }}
-        type: [unit_test, integration_test]
-        include: ${{ fromJson(needs.initialize.outputs.includes) }}
     container: ${{ needs.docker-build-image.outputs.docker_tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 1
-
-  # Runs on-host integration and unit tests.
-  on-host-test:
-    needs: [initialize, docker-unittest-image, build]
-    if: needs.initialize.outputs.on_host_test == 'true'
-    runs-on: [self-hosted, linux, X64]
-    name: ${{matrix.platform}}_${{matrix.shard}}_test
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: ${{ fromJson(needs.initialize.outputs.platforms) }}
-        shard: ${{ fromJson(needs.initialize.outputs.on_host_test_shards) }}
-        config: [devel]
-        include: ${{ fromJson(needs.initialize.outputs.includes) }}
-    container: ${{ needs.docker-unittest-image.outputs.docker_unittest_tag }}
-    env:
-      DISPLAY: :99
-      # For some reason tests complaining about HOME set to /github/home
-      # with permission denied error.
-      HOME: /root
-      COBALT_BOOTLOADER: ${{needs.initialize.outputs.on_host_test_bootloader}}
-    steps:
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-      - name: Run Tests
-        uses: ./.github/actions/on_host_test
+      - name: Install requirements
+        run: |
+          pip3 install grpcio grpcio-tools
+        shell: bash
+      - name: run ${{matrix.type}} tests on ${{matrix.platform}} test
+        run: |
+          python3 tools/mobile_harness_gateway.py \
+            --test_type black_box_test \
+            --platform android-arm64 \
+            --gateway_exit_status DONE \
+            --run_as youtube-cobalt-mh-owner \
+            --remote_archive_path gs://cobalt-actions-devel-test-artifacts/android-arm64/104/artifacts.tar \
+            --branch COBALT \
+            --config devel \
+            --tag cobalt_postsubmit \
+            --sponge_label cobalt_postsubmit \
+            --change_id "" \
+            --builder_name android-arm64_tests \
+            --build_number 104 \
+            --start_timeout 10h \
+            --docker
+        shell: bash
