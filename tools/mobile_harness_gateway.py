@@ -432,6 +432,7 @@ def _SetLoggingConfig(brief):
     logging.root.removeHandler(handler)
 
   logging.basicConfig(
+      stream=sys.stdout,
       level=logging.INFO,
       format=('%(message)s'
               if brief else '[%(filename)s:%(lineno)s] %(message)s'))

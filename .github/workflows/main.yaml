@@ -214,7 +214,7 @@ jobs:
       fail-fast: false
       matrix:
         platform: ${{ fromJson(needs.initialize.outputs.platforms) }}
-        type: [unit_test, integration_test]
+        type: [unit_test, black_box_test]
         config: [ devel ]
     container: ${{ needs.docker-build-image.outputs.docker_tag }}
     steps:
@@ -235,9 +235,16 @@ jobs:
           echo "PROJECT_NAME=$(gcloud config get-value project)" >> $GITHUB_ENV
           echo "GITHUB_RUN_NUMBER=${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
           echo "WORKFLOW=${{ github.workflow }}" >> $GITHUB_ENV
-      - name: run ${{ matrix.type }} tests on ${{ matrix.platform }} platform
+          echo "LOGS_FILE_DIR=$GITHUB_WORKSPACE/out/tmp/${{ matrix.platform }}_${{ matrix.config }}_${{ matrix.type }}/" >> $GITHUB_ENV
+      - name: Create logs directory
         run: |
-          python3 -u tools/mobile_harness_gateway.py \
+          mkdir -p "${LOGS_FILE_DIR}"
+        shell: bash
+      - name: run ${{ matrix.type }} tests on ${{ matrix.platform }} platform
+        id: on_device_test
+        continue-on-error: true
+        run: |
+          python3 tools/mobile_harness_gateway.py \
             --test_type ${{ matrix.type }} \
             --platform ${{ matrix.platform }} \
             --gateway_exit_status DONE \
@@ -251,9 +258,26 @@ jobs:
             --builder_name github_${{ matrix.platform }}_tests \
             --build_number ${GITHUB_RUN_NUMBER} \
             --start_timeout 10h \
-            --docker >> "${LOGS_FILE_DIR}/logs.txt"
+            --docker 2>&1 | tee "${LOGS_FILE_DIR}/logs.txt"
         shell: bash
-
+      - name: Sponge link
+        run: |
+          echo "$(sed -n 's/INFO: Sponge link: //p' "${LOGS_FILE_DIR}/logs.txt")"
+        shell: bash
+      - name: Job link
+        run: |
+          echo "$(sed -n '/"name": "job_link_in_mhfe",/{ n; s/.*"value": //p }' "${LOGS_FILE_DIR}/logs.txt" | tr -d '"')"
+        shell: bash
+      - name: Test link
+        run: |
+          echo "$(sed -n '/"name": "test_link_in_mhfe",/{ n; s/.*"value": //p }' "${LOGS_FILE_DIR}/logs.txt" | tr -d '"')"
+        shell: bash
+      - name: Report to UI
+        if: steps.on_device_test.outcome != 'success'
+        run: |
+          echo "Detected failure in 'on_device_test' step"
+          exit 1
+        shell: bash
   # Runs on-host integration and unit tests.
   on-host-test:
     needs: [initialize, docker-unittest-image, build]
