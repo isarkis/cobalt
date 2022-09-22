@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2019 The Cobalt Authors. All Rights Reserved.
+# Copyright 2022 The Cobalt Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,20 +56,14 @@ _COBALT_BASE_PLATFORMS = [
     'android-x86',
     'darwin-tvos-arm64',
     'nxswitch',
-    'ps4',
-    'ps5',
     'raspi-0',
     'raspi-2',
-    'xb1',
 ]
 
 # Blaze platforms that use the device server for testing.
 _DEVICE_SERVER_BASE_PLATFORMS = [
     'darwin-tvos-arm64',
     'nxswitch',
-    'ps4',
-    'ps5',
-    'xb1',
 ]
 
 _GSUTIL_PATH_ENV_VAR = 'GSUTIL_PATH'

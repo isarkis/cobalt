@@ -78,10 +78,6 @@ _PLATFORM_TO_TEST_TIMEOUTS = {
             unit_test_timeout_min=85,
             perf_test_timeout_min=35,
             black_box_test_timeout_min=20),
-    'ps4':
-        _PlatformTestTimeouts(unit_test_timeout_min=150),
-    'ps5':
-        _PlatformTestTimeouts(unit_test_timeout_min=120),
 }
 
 
