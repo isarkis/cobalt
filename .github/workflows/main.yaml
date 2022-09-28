@@ -254,7 +254,7 @@ jobs:
             --platform ${{ matrix.platform }} \
             --gateway_exit_status DONE  \
             --run_as youtube-cobalt-mh-owner \
-            --remote_archive_path gs://${PROJECT_NAME}-test-artifacts/${WORKFLOW}/${GITHUB_RUN_NUMBER}/${{ matrix.platform }}_${{ matrix.config }}/artifacts.tar \
+            --remote_archive_path gs://${PROJECT_NAME}-test-artifacts-tmp/${WORKFLOW}/${GITHUB_RUN_NUMBER}/${{ matrix.platform }}_${{ matrix.config }}/artifacts.tar \
             --branch COBALT \
             --config ${{ matrix.config }} \
             --tag $([[ "${{ github.workflow }}" == *"_nightly"* ]] && echo cobalt_scheduled || echo cobalt_manual) \
