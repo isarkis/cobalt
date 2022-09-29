@@ -267,7 +267,7 @@ jobs:
         shell: bash
       - name: Test logs link
         run: |
-          echo "$(sed -n 's/Sponge link: http://sponge2/go\/on-device-test/p' "${LOGS_FILE_DIR}/logs.txt")"
+          echo "$(sed -n 's/INFO: Sponge link: //p' "${LOGS_FILE_DIR}/logs.txt")"
         shell: bash
       - name: Job link
         run: |
