@@ -9,20 +9,20 @@ jobs:
   auth:
     runs-on: ubuntu-latest
     steps:
-      - name: Authenticate
+      - name: Get Repos for GITHUB_TOKEN
         run: |
           curl --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/installation/repositories
+      - name: Get user info for GITHUB_TOKEN
+        run: |
+          curl --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/user
       - uses: navikt/github-app-token-generator@v1
         id: get-token
         with:
           private-key: ${{ secrets.ARC_PRIVATE_KEY }}
           app-id: ${{ secrets.ARC_APP_ID }}
-      - name: Auth 2
-        run: |
-          curl -i -X GET -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github+json" https://api.github.com/app/installations
-      - name: Auth 3
-        run: |
-          curl --header 'authorization: Bearer ${{ steps.get-token.outputs.token }}' https://api.github.com/app/installations
-      - name: Auth 4
+      - name: Get Repos for APP
         run: |
           curl --header 'authorization: Bearer ${{ steps.get-token.outputs.token }}' https://api.github.com/installation/repositories
+      - name: Get user info for APP
+        run: |
+          curl --header 'authorization: Bearer ${{ steps.get-token.outputs.token }}' https://api.github.com/user
