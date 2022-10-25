@@ -1,0 +1,12 @@
+name: Auth GITHUB_TOKEN
+
+on:
+  workflow_dispatch:
+
+jobs:
+  auth:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Authenticate
+        run: |
+          curl --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/installation/repositories
