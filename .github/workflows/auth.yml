@@ -26,3 +26,8 @@ jobs:
       - name: Get user info for APP
         run: |
           curl --header 'authorization: Bearer ${{ steps.get-token.outputs.token }}' https://api.github.com/user
+      - name: GH CLI
+        run: |
+          gh auth status
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
