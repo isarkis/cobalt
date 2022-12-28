@@ -32,6 +32,16 @@ env:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  gcloud:
+    runs-on: [self-hosted, linux, X64]
+    steps:
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v1'
+    - name: 'Use gcloud CLI'
+      shell: bash
+      run: |
+        gcloud auth list
+        gsutil ls gs://cobalt-prow/logs
   # Retrieves configuration from json file.
   initialize:
     runs-on: ubuntu-latest
