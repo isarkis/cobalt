@@ -7,4 +7,3 @@ integration system.
 Therefore, while ports in this directory have compiled and worked correctly
 in the past, they may require some maintenence to work with the current
 release of Cobalt.
-

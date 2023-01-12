@@ -165,4 +165,3 @@ Indicates whether the given audio sink handle is valid.
 ```
 bool SbAudioSinkIsValid(SbAudioSink audio_sink)
 ```
-

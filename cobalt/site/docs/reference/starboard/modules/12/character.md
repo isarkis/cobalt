@@ -101,4 +101,3 @@ character as-is.
 ```
 int SbCharacterToUpper(int c)
 ```
-

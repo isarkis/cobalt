@@ -592,36 +592,36 @@ void Cookie::clear_name() {
   return name_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void Cookie::set_name(const ::std::string& value) {
-  
+
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:cobalt.storage.Cookie.name)
 }
  void Cookie::set_name(const char* value) {
-  
+
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:cobalt.storage.Cookie.name)
 }
  void Cookie::set_name(const char* value, size_t size) {
-  
+
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:cobalt.storage.Cookie.name)
 }
  ::std::string* Cookie::mutable_name() {
-  
+
   // @@protoc_insertion_point(field_mutable:cobalt.storage.Cookie.name)
   return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* Cookie::release_name() {
   // @@protoc_insertion_point(field_release:cobalt.storage.Cookie.name)
-  
+
   return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void Cookie::set_allocated_name(::std::string* name) {
   if (name != NULL) {
-    
+
   } else {
-    
+
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
   // @@protoc_insertion_point(field_set_allocated:cobalt.storage.Cookie.name)
@@ -636,36 +636,36 @@ void Cookie::clear_value() {
   return value_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void Cookie::set_value(const ::std::string& value) {
-  
+
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:cobalt.storage.Cookie.value)
 }
  void Cookie::set_value(const char* value) {
-  
+
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:cobalt.storage.Cookie.value)
 }
  void Cookie::set_value(const char* value, size_t size) {
-  
+
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:cobalt.storage.Cookie.value)
 }
  ::std::string* Cookie::mutable_value() {
-  
+
   // @@protoc_insertion_point(field_mutable:cobalt.storage.Cookie.value)
   return value_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* Cookie::release_value() {
   // @@protoc_insertion_point(field_release:cobalt.storage.Cookie.value)
-  
+
   return value_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void Cookie::set_allocated_value(::std::string* value) {
   if (value != NULL) {
-    
+
   } else {
-    
+
   }
   value_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set_allocated:cobalt.storage.Cookie.value)
@@ -680,36 +680,36 @@ void Cookie::clear_domain() {
   return domain_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void Cookie::set_domain(const ::std::string& value) {
-  
+
   domain_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:cobalt.storage.Cookie.domain)
 }
  void Cookie::set_domain(const char* value) {
-  
+
   domain_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:cobalt.storage.Cookie.domain)
 }
  void Cookie::set_domain(const char* value, size_t size) {
-  
+
   domain_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:cobalt.storage.Cookie.domain)
 }
  ::std::string* Cookie::mutable_domain() {
-  
+
   // @@protoc_insertion_point(field_mutable:cobalt.storage.Cookie.domain)
   return domain_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* Cookie::release_domain() {
   // @@protoc_insertion_point(field_release:cobalt.storage.Cookie.domain)
-  
+
   return domain_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void Cookie::set_allocated_domain(::std::string* domain) {
   if (domain != NULL) {
-    
+
   } else {
-    
+
   }
   domain_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), domain);
   // @@protoc_insertion_point(field_set_allocated:cobalt.storage.Cookie.domain)
@@ -724,36 +724,36 @@ void Cookie::clear_path() {
   return path_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void Cookie::set_path(const ::std::string& value) {
-  
+
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:cobalt.storage.Cookie.path)
 }
  void Cookie::set_path(const char* value) {
-  
+
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:cobalt.storage.Cookie.path)
 }
  void Cookie::set_path(const char* value, size_t size) {
-  
+
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:cobalt.storage.Cookie.path)
 }
  ::std::string* Cookie::mutable_path() {
-  
+
   // @@protoc_insertion_point(field_mutable:cobalt.storage.Cookie.path)
   return path_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* Cookie::release_path() {
   // @@protoc_insertion_point(field_release:cobalt.storage.Cookie.path)
-  
+
   return path_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void Cookie::set_allocated_path(::std::string* path) {
   if (path != NULL) {
-    
+
   } else {
-    
+
   }
   path_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), path);
   // @@protoc_insertion_point(field_set_allocated:cobalt.storage.Cookie.path)
@@ -768,7 +768,7 @@ void Cookie::clear_creation_time_us() {
   return creation_time_us_;
 }
  void Cookie::set_creation_time_us(::google::protobuf::int64 value) {
-  
+
   creation_time_us_ = value;
   // @@protoc_insertion_point(field_set:cobalt.storage.Cookie.creation_time_us)
 }
@@ -782,7 +782,7 @@ void Cookie::clear_expiration_time_us() {
   return expiration_time_us_;
 }
  void Cookie::set_expiration_time_us(::google::protobuf::int64 value) {
-  
+
   expiration_time_us_ = value;
   // @@protoc_insertion_point(field_set:cobalt.storage.Cookie.expiration_time_us)
 }
@@ -796,7 +796,7 @@ void Cookie::clear_last_access_time_us() {
   return last_access_time_us_;
 }
  void Cookie::set_last_access_time_us(::google::protobuf::int64 value) {
-  
+
   last_access_time_us_ = value;
   // @@protoc_insertion_point(field_set:cobalt.storage.Cookie.last_access_time_us)
 }
@@ -810,7 +810,7 @@ void Cookie::clear_secure() {
   return secure_;
 }
  void Cookie::set_secure(bool value) {
-  
+
   secure_ = value;
   // @@protoc_insertion_point(field_set:cobalt.storage.Cookie.secure)
 }
@@ -824,7 +824,7 @@ void Cookie::clear_http_only() {
   return http_only_;
 }
  void Cookie::set_http_only(bool value) {
-  
+
   http_only_ = value;
   // @@protoc_insertion_point(field_set:cobalt.storage.Cookie.http_only)
 }
@@ -1081,36 +1081,36 @@ void LocalStorageEntry::clear_key() {
   return key_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void LocalStorageEntry::set_key(const ::std::string& value) {
-  
+
   key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:cobalt.storage.LocalStorageEntry.key)
 }
  void LocalStorageEntry::set_key(const char* value) {
-  
+
   key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:cobalt.storage.LocalStorageEntry.key)
 }
  void LocalStorageEntry::set_key(const char* value, size_t size) {
-  
+
   key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:cobalt.storage.LocalStorageEntry.key)
 }
  ::std::string* LocalStorageEntry::mutable_key() {
-  
+
   // @@protoc_insertion_point(field_mutable:cobalt.storage.LocalStorageEntry.key)
   return key_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* LocalStorageEntry::release_key() {
   // @@protoc_insertion_point(field_release:cobalt.storage.LocalStorageEntry.key)
-  
+
   return key_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void LocalStorageEntry::set_allocated_key(::std::string* key) {
   if (key != NULL) {
-    
+
   } else {
-    
+
   }
   key_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), key);
   // @@protoc_insertion_point(field_set_allocated:cobalt.storage.LocalStorageEntry.key)
@@ -1125,36 +1125,36 @@ void LocalStorageEntry::clear_value() {
   return value_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void LocalStorageEntry::set_value(const ::std::string& value) {
-  
+
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:cobalt.storage.LocalStorageEntry.value)
 }
  void LocalStorageEntry::set_value(const char* value) {
-  
+
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:cobalt.storage.LocalStorageEntry.value)
 }
  void LocalStorageEntry::set_value(const char* value, size_t size) {
-  
+
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:cobalt.storage.LocalStorageEntry.value)
 }
  ::std::string* LocalStorageEntry::mutable_value() {
-  
+
   // @@protoc_insertion_point(field_mutable:cobalt.storage.LocalStorageEntry.value)
   return value_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* LocalStorageEntry::release_value() {
   // @@protoc_insertion_point(field_release:cobalt.storage.LocalStorageEntry.value)
-  
+
   return value_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void LocalStorageEntry::set_allocated_value(::std::string* value) {
   if (value != NULL) {
-    
+
   } else {
-    
+
   }
   value_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set_allocated:cobalt.storage.LocalStorageEntry.value)
@@ -1404,36 +1404,36 @@ void LocalStorage::clear_serialized_origin() {
   return serialized_origin_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void LocalStorage::set_serialized_origin(const ::std::string& value) {
-  
+
   serialized_origin_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:cobalt.storage.LocalStorage.serialized_origin)
 }
  void LocalStorage::set_serialized_origin(const char* value) {
-  
+
   serialized_origin_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:cobalt.storage.LocalStorage.serialized_origin)
 }
  void LocalStorage::set_serialized_origin(const char* value, size_t size) {
-  
+
   serialized_origin_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:cobalt.storage.LocalStorage.serialized_origin)
 }
  ::std::string* LocalStorage::mutable_serialized_origin() {
-  
+
   // @@protoc_insertion_point(field_mutable:cobalt.storage.LocalStorage.serialized_origin)
   return serialized_origin_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* LocalStorage::release_serialized_origin() {
   // @@protoc_insertion_point(field_release:cobalt.storage.LocalStorage.serialized_origin)
-  
+
   return serialized_origin_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void LocalStorage::set_allocated_serialized_origin(::std::string* serialized_origin) {
   if (serialized_origin != NULL) {
-    
+
   } else {
-    
+
   }
   serialized_origin_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), serialized_origin);
   // @@protoc_insertion_point(field_set_allocated:cobalt.storage.LocalStorage.serialized_origin)

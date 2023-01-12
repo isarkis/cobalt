@@ -134,4 +134,3 @@ Inline wrapper of SbLogFormat to convert from ellipsis to va_args.
 ```
 void static void void SbLogRawFormatF(const char *format,...) SB_PRINTF_FORMAT(1
 ```
-

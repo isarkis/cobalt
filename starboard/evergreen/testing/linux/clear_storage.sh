@@ -18,4 +18,3 @@ function clear_storage() {
   echo " Clearing Cobalt storage"
   eval "find ${STORAGE_DIR}/ -mindepth 1 -maxdepth 1 ! -name 'icu' -exec rm -rf {} +" 1> /dev/null
 }
-

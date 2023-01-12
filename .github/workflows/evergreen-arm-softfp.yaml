@@ -15,4 +15,3 @@ jobs:
       packages: write
     with:
       platform: $GITHUB_WORKFLOW
-

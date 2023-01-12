@@ -19,4 +19,3 @@ function stop_cobalt() {
   eval "kill -9 $(pidof "${OUT}/loader_app")" 1> /dev/null
   sleep 1
 }
-

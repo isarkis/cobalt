@@ -12,4 +12,3 @@ jobs:
       packages: write
     with:
       platform: evergreen-x86
-

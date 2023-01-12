@@ -61,5 +61,3 @@ for line in sys.stdin:
     print("{} @@ {}".format(*buffer))
     buffer = []
 '
-
-

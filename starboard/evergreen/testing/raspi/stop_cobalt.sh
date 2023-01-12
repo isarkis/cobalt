@@ -19,4 +19,3 @@ function stop_cobalt() {
   eval "${SSH}\"pidof /home/pi/coeg/loader_app | xargs kill -9\"" 1> /dev/null
   sleep 1
 }
-

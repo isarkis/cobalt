@@ -10,7 +10,7 @@ different purposes.
 
 If you have identified a bug in Cobalt common code - meaning that you don't
 expect that it is related to a platform or port implementation quirk, then you
-should file a bug on our public issue tracker. 
+should file a bug on our public issue tracker.
 
 Additionally, if you have specific feature requests, you can also file them on
 our public tracker, but they should be very concrete and well-specified. If

@@ -113,7 +113,7 @@ class CobaltA11yHelper extends ExploreByTouchHelper {
   }
 
   private void maybeInjectEvent(int currentFocusedViewId) {
-    if (!unhandledInput) { 
+    if (!unhandledInput) {
       return;
     }
     switch (currentFocusedViewId) {

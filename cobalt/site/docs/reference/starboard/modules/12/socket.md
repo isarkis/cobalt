@@ -583,4 +583,3 @@ option.
 ```
 bool SbSocketSetTcpWindowScaling(SbSocket socket, bool value)
 ```
-

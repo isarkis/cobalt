@@ -266,7 +266,7 @@ inline bool Installation::is_successful() const {
   return is_successful_;
 }
 inline void Installation::set_is_successful(bool value) {
-  
+
   is_successful_ = value;
   // @@protoc_insertion_point(field_set:cobalt.loader.Installation.is_successful)
 }
@@ -280,7 +280,7 @@ inline ::google::protobuf::int32 Installation::num_tries_left() const {
   return num_tries_left_;
 }
 inline void Installation::set_num_tries_left(::google::protobuf::int32 value) {
-  
+
   num_tries_left_ = value;
   // @@protoc_insertion_point(field_set:cobalt.loader.Installation.num_tries_left)
 }
@@ -294,7 +294,7 @@ inline ::google::protobuf::int32 Installation::priority() const {
   return priority_;
 }
 inline void Installation::set_priority(::google::protobuf::int32 value) {
-  
+
   priority_ = value;
   // @@protoc_insertion_point(field_set:cobalt.loader.Installation.priority)
 }
@@ -342,7 +342,7 @@ inline ::google::protobuf::int32 InstallationStore::roll_forward_to_installation
   return roll_forward_to_installation_;
 }
 inline void InstallationStore::set_roll_forward_to_installation(::google::protobuf::int32 value) {
-  
+
   roll_forward_to_installation_ = value;
   // @@protoc_insertion_point(field_set:cobalt.loader.InstallationStore.roll_forward_to_installation)
 }

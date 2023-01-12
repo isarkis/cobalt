@@ -70,4 +70,3 @@ Number."
 ```
 bool SbDoubleIsNan(const double d)
 ```
-
